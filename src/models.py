@@ -9,27 +9,23 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'user'
-    # Here we define columns for the table user
-    # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
+    favorites = relationship("Favorite", back_populates="user")
 
 class Favorite(Base):
     __tablename__ = 'favorite'
-    # Here we define columns for the table user
-    # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('user.id'))
+    person_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     character_id = Column(Integer, ForeignKey('character.id'))
     planet_id = Column(Integer, ForeignKey('planet.id'))
     vehicle_id = Column(Integer, ForeignKey('vehicle.id'))
+    user = relationship("User", back_populates="favorites")
 
 
 class Character(Base):
     __tablename__ = 'character'
-    # Here we define columns for the table user
-    # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     height = Column(Integer)
@@ -46,8 +42,6 @@ class Character(Base):
     
 class Planet(Base):
     __tablename__ = 'planet'
-    # Here we define columns for the table user
-    # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     diameter = Column(Integer)
@@ -64,8 +58,8 @@ class Planet(Base):
 
 class Vehicle(Base):
     __tablename__ = 'vehicle'
-    # Here we define columns for the table user
-    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     model = Column(String)
